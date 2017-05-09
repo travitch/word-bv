@@ -18,6 +18,7 @@ module Data.BitVector.Word (
   inject,
   -- * Conversion
   zeroExtend,
+  signExtend,
   extract,
   -- * Kind stuff
   VecState(..)
@@ -60,6 +61,18 @@ append (BV l1 w1) (BV l2 w2) = BV l3 w3
 zeroExtend :: (FiniteBits w) => BV w 'Unextended -> BV w 'Extended
 zeroExtend (BV _ w) = BV (fromIntegral (finiteBitSize w)) w
 {-# INLINE zeroExtend #-}
+
+-- | Sign extend the underlying word, making it suitable for bitwise operations.
+signExtend :: (FiniteBits w, Num w) => BV w 'Unextended -> BV w 'Extended
+signExtend bits@(BV l w)
+  | l == 0 || w == 0 = BV (fromIntegral (finiteBitSize w)) w
+  | otherwise =
+    case testBit w (fromIntegral l - 1) of
+      False -> zeroExtend bits
+      True -> zeroExtend (ones (fromIntegral nBits) `append` bits)
+  where
+    nBits = finiteBitSize w
+{-# INLINE signExtend #-}
 
 -- | Extract the underlying word from the bitvector
 extract :: BV w 'Extended -> w
