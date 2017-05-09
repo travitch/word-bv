@@ -14,7 +14,6 @@ module Data.BitVector.Word (
   null,
   empty,
   -- * Modifications
-  permute,
   slice,
   inject,
   -- * Conversion
@@ -107,13 +106,6 @@ bv nBits w = BV nBits' (mask .&. w)
 bv' :: (FiniteBits w) => w -> BV w 'Extended
 bv' w = BV (fromIntegral (finiteBitSize w)) w
 {-# INLINE bv' #-}
-
--- | Permute the bits in an extended bitvector.
---
--- If the permutation causes chunks to overlap, the results are undefined
-permute :: (FiniteBits w) => BV w 'Extended -> [(Word, Word, Word)] -> BV w 'Extended
-permute = undefined
-{-# INLINE permute #-}
 
 -- | Extract a contiguous sequence of bits from a bitvector, shifting the result
 -- such that the least significant bit of the slice is located at bit zero.
