@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE KindSignatures #-}
+-- | This module implements bitvector operations on top of fixed-length words
 module Data.BitVector.Word (
   -- * Type and construction
   BV,
